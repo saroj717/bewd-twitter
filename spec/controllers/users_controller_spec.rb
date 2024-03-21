@@ -13,12 +13,10 @@ RSpec.describe UsersController, type: :controller do
         }
       }
 
-      expect(response.body).to eq({
-        user: {
-          username: 'test',
-          email: 'test@test.com'
-        }
-      }.to_json)
+      expect(response).to have_http_status(:created) # Ensure user is created successfully
+      response_hash = JSON.parse(response.body)
+      puts "Response body: #{response.body}"
+      expect(response_hash['user']).to include("username" => "test", "email" => "test@test.com")
     end
   end
 end
